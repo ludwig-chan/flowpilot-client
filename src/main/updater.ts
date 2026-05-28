@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 import AdmZip from 'adm-zip'
-import { loadConfig, saveConfig, AppConfig } from './config'
+import { loadConfig, saveConfig, AppConfig, readManifestVersion } from './config'
 
 export interface ReleaseInfo {
   tagName: string
@@ -125,15 +125,16 @@ function isNewer(a: string, b: string): boolean {
 
 export async function checkForUpdate(): Promise<UpdateStatus> {
   const config = loadConfig()
+  const currentVersion = readManifestVersion(config.extensionDir)
   if (!config.remoteUrl) {
-    return { hasUpdate: false, latestVersion: config.currentVersion, currentVersion: config.currentVersion }
+    return { hasUpdate: false, latestVersion: currentVersion, currentVersion }
   }
   const raw = await httpGet(config.remoteUrl)
   const release = parseGiteeRelease(raw)
   return {
-    hasUpdate: isNewer(release.tagName, config.currentVersion),
+    hasUpdate: isNewer(release.tagName, currentVersion),
     latestVersion: release.tagName,
-    currentVersion: config.currentVersion,
+    currentVersion,
     releaseName: release.releaseName
   }
 }
@@ -205,10 +206,6 @@ export async function performUpdate(
 
   // 清理临时文件
   fs.unlink(tmpZip, () => {})
-
-  // 更新版本号
-  config.currentVersion = release.tagName
-  saveConfig(config)
 
   return { success: true, backupPath, newVersion: release.tagName }
 }

@@ -118,18 +118,14 @@ export default function Settings({ showToast }: SettingsProps): React.JSX.Elemen
       <div className="card">
         <div className="card-title">版本信息</div>
         <div className="form-group" style={{ marginBottom: 0 }}>
-          <label className="form-label">当前记录版本</label>
-          <input
+          <label className="form-label">当前插件版本</label>
+          <div
             className="form-input"
-            type="text"
-            value={config.currentVersion}
-            onChange={(e) => setConfig((prev) => ({ ...prev, currentVersion: e.target.value }))}
-            placeholder="v0.0.0"
-            style={{ maxWidth: 160 }}
-          />
-          <div className="form-hint">
-            首次使用时填入当前已安装的插件版本号，格式如 v1.0.0
+            style={{ maxWidth: 160, background: 'var(--bg-secondary, #f5f5f5)', cursor: 'default', userSelect: 'text' }}
+          >
+            {config.currentVersion}
           </div>
+          <div className="form-hint">自动从插件目录的 manifest.json 读取</div>
         </div>
       </div>
 

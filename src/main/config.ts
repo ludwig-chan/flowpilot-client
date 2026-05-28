@@ -42,3 +42,17 @@ export function saveConfig(config: AppConfig): void {
   }
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2), 'utf-8')
 }
+
+/** 从已安装插件目录的 manifest.json 动态读取版本号 */
+export function readManifestVersion(extensionDir: string): string {
+  try {
+    const manifestPath = path.join(extensionDir, 'manifest.json')
+    if (!fs.existsSync(manifestPath)) return 'v0.0.0'
+    const raw = fs.readFileSync(manifestPath, 'utf-8')
+    const manifest = JSON.parse(raw)
+    const ver: string = manifest.version || '0.0.0'
+    return ver.startsWith('v') ? ver : `v${ver}`
+  } catch {
+    return 'v0.0.0'
+  }
+}

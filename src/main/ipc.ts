@@ -1,7 +1,7 @@
 import { ipcMain, BrowserWindow, shell, dialog } from 'electron'
 import { spawn } from 'child_process'
 import { existsSync } from 'fs'
-import { loadConfig, saveConfig, AppConfig } from './config'
+import { loadConfig, saveConfig, AppConfig, readManifestVersion } from './config'
 import {
   checkForUpdate,
   performUpdate,
@@ -35,9 +35,11 @@ function findBrowserExe(id: string): string | null {
 }
 
 export function registerIpcHandlers(mainWindow: BrowserWindow): void {
-  // 获取配置
+  // 获取配置（currentVersion 动态从已安装插件的 manifest.json 读取）
   ipcMain.handle('get-config', () => {
-    return loadConfig()
+    const config = loadConfig()
+    config.currentVersion = readManifestVersion(config.extensionDir)
+    return config
   })
 
   // 保存配置
