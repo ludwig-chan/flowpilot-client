@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 import AdmZip from 'adm-zip'
-import { loadConfig, saveConfig, AppConfig, readManifestVersion } from './config'
+import { loadConfig, AppConfig, readManifestVersion } from './config'
 
 export interface ReleaseInfo {
   tagName: string
