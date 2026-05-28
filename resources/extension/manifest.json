@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "FlowPilot Extension",
+  "version": "1.0.0",
+  "description": "FlowPilot browser extension",
+  "permissions": [],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "FlowPilot"
+  }
+}
