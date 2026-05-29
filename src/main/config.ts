@@ -14,7 +14,7 @@ const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json')
 
 const DEFAULT_CONFIG: AppConfig = {
   extensionDir: path.join(app.getPath('userData'), 'extension'),
-  remoteUrl: '',
+  remoteUrl: 'https://raw.githubusercontent.com/ludwig-chan/flowpilot/main/update.json',
   checkIntervalHours: 1,
   currentVersion: 'v0.0.0'
 }
